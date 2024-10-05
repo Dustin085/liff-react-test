@@ -1,0 +1,31 @@
+.home-page-wrap {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+
+.liff-info-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 15px;
+}
+
+.liff-info-list .item {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+}
+
+.liff-info-list .item .title {
+  font-size: 1rem;
+}
+
+.liff-info-list .item .content {
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 5px 10px;
+  background-color: rgb(105, 69, 139);
+  border-radius: 10px;
+  color: white;
+}
