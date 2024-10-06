@@ -1,54 +1,26 @@
-import './App.css';
-import liff from '@line/liff';
+// import liff from '@line/liff';
 import { useState, useEffect } from 'react';
+import { useLiff } from 'react-liff';
 
-
-liff.init({
-  liffId: '2006424481-BWa6zeaw'
-}).then(() => {
-  // console.log(liff.isLoggedIn());  // 判斷開啟此網頁的 LINE 使用者是否為登入狀態
-  if (!liff.isLoggedIn()) {
-    liff.login();
-  } else {
-    liff.getProfile()
-      .then((profile) => {
-        // console.log(profile);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-});
+import './App.css';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 function App() {
 
-  const [useProfile, setUseProfile] = useState({});
-  // liff.init({
-  //   liffId: '2006424481-BWa6zeaw'
-  // }).then(() => {
-  //   // console.log(liff.isLoggedIn());  // 判斷開啟此網頁的 LINE 使用者是否為登入狀態
-  //   if (!liff.isLoggedIn()) {
-  //     // liff.login();
-  //   } else {
-  //     liff.getProfile()
-  //       .then((profile) => {
-  //         setUseProfile(profile);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // });
-  useEffect(() => {
-    liff.getProfile()
-      .then((profile) => {
-        setUseProfile(profile);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const { isLoggedIn, liff } = useLiff();
 
-  }, []);
+  const [useProfile, setUseProfile] = useState({});
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      liff.getProfile
+        .then((profile) => {
+          setUseProfile(profile);
+        }).catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isLoggedIn]);
 
   // useEffect(() => {
   //   console.log(useProfile);
@@ -61,11 +33,13 @@ function App() {
           Hello Liff!!
         </h1>
         <h2 className="welcome-text">
-          Welcome {useProfile.displayName};
+          <WelcomeText displayName={useProfile.displayName} />
+          {/* Welcome {useProfile.displayName}; */}
         </h2>
-        <picture className="user-avatar">
+        <UserAvatar pictureUrl={useProfile.pictureUrl} />
+        {/* <picture className="user-avatar">
           <img src={useProfile.pictureUrl} alt="使用者照片" />
-        </picture>
+        </picture> */}
         <ul className="liff-info-list">
           <LiffInfoItem liffApiName="getOS" />
           <LiffInfoItem liffApiName="getLanguage" />
@@ -79,18 +53,66 @@ function App() {
           {/* <LiffInfoItem liffApiName="getProfile" /> */}
           {/* <LiffInfoItem liffApiName="getFriendship" /> */}
         </ul>
+        <LogInOutBtn />
       </div>
     </div>
   );
 }
 
-function LiffInfoItem({ liffApiName }) {
+// 歡迎文字元件
+function WelcomeText({ displayName }) {
+  let welcomeText = "";
+  if (!displayName) {
+    welcomeText = "請按下方登入";
+  } else {
+    welcomeText = `歡迎，${displayName}`;
+  }
   return (
-    <li className="item">
-      <p className="title">liff.{liffApiName}:</p>
-      <p className="content">{String(liff[liffApiName]())}</p>
-    </li>
-  );
+    <h2 className="welcome-text">
+      {welcomeText}
+    </h2>
+  )
+}
+
+// 使用者頭像元件
+function UserAvatar({ pictureUrl }) {
+  if (pictureUrl) {
+    return (
+      <picture className="user-avatar">
+        <img src={pictureUrl} alt="使用者照片" />
+      </picture>
+    )
+  } else {
+    return;
+  }
+}
+
+
+// 用來顯示Liff API可以拿到的資訊
+function LiffInfoItem({ liffApiName }) {
+  const { isReady, liff } = useLiff();
+  if (isReady) {
+    return (
+      <li className="item">
+        <p className="title">liff.{liffApiName}:</p>
+        <p className="content">{String(liff[liffApiName]())}</p>
+      </li>
+    );
+  }
+}
+
+// 登入或登出按鈕
+function LogInOutBtn() {
+  const { isLoggedIn, liff } = useLiff();
+  if (!isLoggedIn) {
+    return (
+      <button type="button" className="logInOutBtn" onClick={liff.login}>LogIn</button>
+    )
+  } else if (isLoggedIn) {
+    return (
+      <button type="button" className="logInOutBtn" onClick={liff.logout}>LogOut</button>
+    )
+  }
 }
 
 export default App;
