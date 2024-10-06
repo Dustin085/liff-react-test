@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/liff-react-test/static/css/main.41c7f0af.css",
-    "main.js": "/liff-react-test/static/js/main.891ef72c.js",
+    "main.js": "/liff-react-test/static/js/main.fb1dacdc.js",
     "static/js/14.4c797e6c.chunk.js": "/liff-react-test/static/js/14.4c797e6c.chunk.js",
     "static/js/453.80254ae8.chunk.js": "/liff-react-test/static/js/453.80254ae8.chunk.js",
     "index.html": "/liff-react-test/index.html",
     "main.41c7f0af.css.map": "/liff-react-test/static/css/main.41c7f0af.css.map",
-    "main.891ef72c.js.map": "/liff-react-test/static/js/main.891ef72c.js.map",
+    "main.fb1dacdc.js.map": "/liff-react-test/static/js/main.fb1dacdc.js.map",
     "14.4c797e6c.chunk.js.map": "/liff-react-test/static/js/14.4c797e6c.chunk.js.map",
     "453.80254ae8.chunk.js.map": "/liff-react-test/static/js/453.80254ae8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.41c7f0af.css",
-    "static/js/main.891ef72c.js"
+    "static/js/main.fb1dacdc.js"
   ]
 }
